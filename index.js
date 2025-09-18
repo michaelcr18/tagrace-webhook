@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const VERIFICATION_TOKEN = "mbombela-2025"; // You can change this to anything
-const SHEETDB_URL = "https://sheetdb.io/api/v1/YOUR_SHEETDB_ID"; // Replace with your real SheetDB URL
+const SHEETDB_URL = "https://sheetdb.io/api/v1/fyyvku4q2tqb0"; // Replace with your real SheetDB URL
 
 app.post("/smarttag", async (req, res) => {
   const token = req.headers["x-webhook-token"];
