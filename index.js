@@ -19,11 +19,24 @@ app.post("/smarttag", async (req, res) => {
     return res.status(400).send("Missing tagId or location");
   }
 
-  try {
+try {
   console.log("Received check-in:", { tagId, location, battery, status });
-  res.send("Check-in received (not logged)");
+
+  await axios.post(SHEETDB_URL, {
+    data: {
+      tagId,
+      location,
+      battery,
+      status,
+      timestamp: new Date().toISOString()
+    }
+  });
+
+  res.send("Check-in logged to SheetDB");
 } catch (err) {
+  console.error("Error logging to SheetDB:", err.message);
   res.status(500).send("Error logging check-in");
+}
 }
 });
 
