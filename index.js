@@ -37,7 +37,7 @@ try {
   console.error("Error logging to SheetDB:", err.message);
   res.status(500).send("Error logging check-in");
 }
-}
+
 });
 
 app.listen(3000, () => {
