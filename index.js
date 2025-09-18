@@ -26,14 +26,17 @@ app.post("/smarttag", async (req, res) => {
     console.log("Received check-in:", tagId, location, battery, status);
 
     await axios.post(SHEETDB_URL, {
-      data: {
-        tagId,
-        location,
-        battery,
-        status,
-        timestamp: new Date().toISOString()
-      }
-    });
+  data: [
+    {
+      tagId,
+      location,
+      battery,
+      status,
+      timestamp: new Date().toISOString()
+    }
+  ]
+});
+
 
     res.send("Check-in logged to SheetDB");
   } catch (err) {
