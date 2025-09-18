@@ -4,7 +4,7 @@ const app = express();
 app.use(express.json());
 
 const SHEETDB_URL = "https://sheetdb.io/api/v1/fyyvku4q2tqb0";
-const VERIFICATION_TOKEN = "your-token-here"; // Replace with your actual token
+const VERIFICATION_TOKEN = "mbombela-2025"; // Replace with your actual token
 
 app.post("/smarttag", async (req, res) => {
   const token = req.headers["x-webhook-token"];
