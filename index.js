@@ -1,54 +1,46 @@
 const express = require("express");
-const axios = require("axios");
+const fetch = require("node-fetch");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
-// Replace with your actual SheetDB endpoint
-const SHEETDB_URL = "https://sheetdb.io/api/v1/fyyvku4q2tqb0";
-
-// Your webhook verification token
-const VERIFICATION_TOKEN = "mbombela-2025";
+const PORT = process.env.PORT || 3000;
 
 app.post("/smarttag", async (req, res) => {
-  const { tagId, location, battery, status } = req.body;
-  const token = req.headers["x-webhook-token"];
-
-  if (token !== VERIFICATION_TOKEN) {
-    return res.status(403).send("Invalid token");
-  }
-
-  if (!tagId || !location) {
-    return res.status(400).send("Missing tagId or location");
-  }
-
-  try {
-  console.log("Received check-in:", tagId, location, battery, status);
+  console.log("📥 Received check-in:", req.body); // Log incoming data
 
   const payload = {
-    data: [
-      {
-        tagId,
-        location,
-        battery,
-        status,
-        timestamp: new Date().toISOString()
-      }
-    ]
+    data: {
+      tagId: req.body.tagId,
+      location: req.body.location,
+      battery: req.body.battery,
+      status: req.body.status
+    }
   };
 
-  console.log("Sending to SheetDB:", JSON.stringify(payload, null, 2));
+  try {
+    const response = await fetch("https://sheetdb.io/api/v1/fyyvku4q2tqb0", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
 
-  await axios.post(SHEETDB_URL, payload);
+    const result = await response.json();
+    console.log("📤 SheetDB response:", result); // Log outgoing result
 
-  res.send("Check-in logged to SheetDB");
-}
- catch (err) {
-    console.error("Error logging to SheetDB:", err.response?.data || err.message);
-    res.status(500).send("Error logging check-in");
+    res.status(200).send("✅ Logged to SheetDB");
+  } catch (err) {
+    console.error("❌ Error forwarding to SheetDB:", err);
+    res.status(500).send("Failed to log");
   }
 });
 
-app.listen(3000, () => {
-  console.log("Webhook running on port 3000");
+app.get("/", (req, res) => {
+  res.send("TagRace webhook is live.");
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
