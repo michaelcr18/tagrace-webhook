@@ -12,13 +12,12 @@ app.post("/smarttag", async (req, res) => {
   console.log("📥 Received check-in:", req.body); // Log incoming data
 
   const payload = {
-    data: {
-      tagId: req.body.tagId,
-      location: req.body.location,
-      battery: req.body.battery,
-      status: req.body.status
-    }
-  };
+  tagId: req.body.tagId,
+  location: req.body.location,
+  battery: req.body.battery,
+  status: req.body.status,
+  timestamp: new Date().toISOString()
+};
 
   try {
     const response = await fetch("https://sheetdb.io/api/v1/fyyvku4q2tqb0", {
