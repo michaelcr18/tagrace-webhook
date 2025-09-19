@@ -23,23 +23,27 @@ app.post("/smarttag", async (req, res) => {
   }
 
   try {
-    console.log("Received check-in:", tagId, location, battery, status);
+  console.log("Received check-in:", tagId, location, battery, status);
 
-    await axios.post(SHEETDB_URL, {
-  data: [
-    {
-      tagId,
-      location,
-      battery,
-      status,
-      timestamp: new Date().toISOString()
-    }
-  ]
-});
+  const payload = {
+    data: [
+      {
+        tagId,
+        location,
+        battery,
+        status,
+        timestamp: new Date().toISOString()
+      }
+    ]
+  };
 
+  console.log("Sending to SheetDB:", JSON.stringify(payload, null, 2));
 
-    res.send("Check-in logged to SheetDB");
-  } catch (err) {
+  await axios.post(SHEETDB_URL, payload);
+
+  res.send("Check-in logged to SheetDB");
+}
+ catch (err) {
     console.error("Error logging to SheetDB:", err.response?.data || err.message);
     res.status(500).send("Error logging check-in");
   }
