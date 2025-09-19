@@ -12,18 +12,19 @@ app.post("/smarttag", async (req, res) => {
   console.log("📥 Received check-in:", req.body); // Log incoming data
 
   const payload = {
-  tagId: req.body.tagId,
-  location: req.body.location,
-  battery: req.body.battery,
-  status: req.body.status,
-  timestamp: new Date().toISOString()
-};
+    tagId: req.body.tagId,
+    location: req.body.location,
+    battery: req.body.battery,
+    status: req.body.status,
+    timestamp: new Date().toISOString(),
+    name: req.body.name || "Anonymous" // ✅ Include name field
+  };
 
   try {
     const response = await fetch("https://sheetdb.io/api/v1/fyyvku4q2tqb0", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ data: [payload] }) // ✅ Wrap in { data: [...] } for SheetDB
     });
 
     const result = await response.json();
