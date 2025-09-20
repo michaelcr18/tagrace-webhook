@@ -27,7 +27,7 @@ app.post("/smarttag", async (req, res) => {
     const response = await fetch("https://sheetdb.io/api/v1/fyyvku4q2tqb0", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: payload }) // ✅ Correct structure for SheetDB
+      body: JSON.stringify({ data: payload }) // ✅ Correct format for SheetDB
     });
 
     const result = await response.json();
