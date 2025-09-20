@@ -21,13 +21,13 @@ app.post("/smarttag", async (req, res) => {
     photo: req.body.photo || "" // ✅ Include photo field
   };
 
-  console.log("📦 Sending to SheetDB:", JSON.stringify({ data: payload }));
+  console.log("📦 Sending to SheetDB:", JSON.stringify({ data: [payload] }));
 
   try {
     const response = await fetch("https://sheetdb.io/api/v1/fyyvku4q2tqb0", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: payload }) // ✅ Correct format for SheetDB
+      body: JSON.stringify({ data: [payload] }) // ✅ Use batch format
     });
 
     const result = await response.json();
