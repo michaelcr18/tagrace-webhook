@@ -17,7 +17,8 @@ app.post("/smarttag", async (req, res) => {
     battery: req.body.battery,
     status: req.body.status,
     timestamp: new Date().toISOString(),
-    name: req.body.name || "Anonymous" // ✅ Include name field
+    name: req.body.name || "Anonymous",
+    photo: req.body.photo || "" // ✅ NEW: Include photo field
   };
 
   try {
