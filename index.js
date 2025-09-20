@@ -18,14 +18,16 @@ app.post("/smarttag", async (req, res) => {
     status: req.body.status,
     timestamp: req.body.timestamp,
     name: req.body.name || "Anonymous",
-    photo: req.body.photo || "" // ✅ NEW: Include photo field
+    photo: req.body.photo || "" // ✅ Include photo field
   };
+
+  console.log("📦 Sending to SheetDB:", JSON.stringify({ data: payload }));
 
   try {
     const response = await fetch("https://sheetdb.io/api/v1/fyyvku4q2tqb0", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: payload }) // ✅ Wrap in { data: [...] } for SheetDB
+      body: JSON.stringify({ data: payload }) // ✅ Correct structure for SheetDB
     });
 
     const result = await response.json();
