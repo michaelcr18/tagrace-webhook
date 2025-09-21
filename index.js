@@ -125,6 +125,7 @@
     async function getLocation() {
       const status = document.getElementById("status");
       status.innerText = "📡 Uploading photo…";
+      status.classList.add("flash");
 
       const photoInput = document.getElementById("photo");
       const file = photoInput.files[0];
@@ -152,6 +153,7 @@
 
       if (!navigator.geolocation) {
         status.innerText = "❌ Geolocation not supported.";
+        status.classList.remove("flash");
         return;
       }
 
@@ -175,12 +177,14 @@
         await sendPayload(payload);
       }, err => {
         status.innerText = "❌ Location error: " + err.message;
+        status.classList.remove("flash");
       });
     }
 
     async function sendPayload(payload) {
       const status = document.getElementById("status");
       status.innerText = "📡 Sending check-in…";
+      status.classList.add("flash");
 
       try {
         const res = await fetch("https://tagrace-webhook.onrender.com/smarttag", {
@@ -194,10 +198,12 @@
         } else {
           const text = await res.text();
           status.innerText = `❌ Server error: ${text}`;
+          status.classList.remove("flash");
         }
       } catch (err) {
         console.error("❌ Fetch error:", err);
         status.innerText = "❌ Network error: " + err.message;
+        status.classList.remove("flash");
       }
     }
   </script>
